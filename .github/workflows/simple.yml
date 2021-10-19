@@ -8,6 +8,10 @@ jobs:
     steps: 
       - name: echo a string
         run: echo "Hello World2"
+        # tempo máximo que o passo pode rodar. pode ser feito com o job também
+        timeout-minutes: 3
+        # continua os demais passos se der erro
+        continue-on-error: true
       - name: multiline script 
         run: |
            node -v 

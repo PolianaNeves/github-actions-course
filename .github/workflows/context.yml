@@ -19,8 +19,9 @@ jobs:
       - name: Dump GitHub context
         env:
           GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: eccho "$GITHUB_CONTEXT"
+        run: echo "$GITHUB_CONTEXT"
       - name: Dump job context
+        # se o passo anterior falhar, este continua (os demais não)
         if: failure()
         env:
           JOB_CONTEXT: ${{ toJSON(job) }}
@@ -30,6 +31,7 @@ jobs:
           STEPS_CONTEXT: ${{ toJSON(steps) }}
         run: echo "$STEPS_CONTEXT"
       - name: Dump runner context
+      # sempre é executado, mesmo que o anterior falhe
         if: always()
         env:
           RUNNER_CONTEXT: ${{ toJSON(runner) }}
