@@ -1,19 +1,37 @@
 name: Actions workflow
 
 on: 
-  repository_dispatch:
+  # filtrando para ser acionado somente na master, tb funciona com o pull-request
+  push:
+    #temos branches e branches-ignore, que só podem ser usadas separadamente
+    branches:
+      - master
+      # filtra pelo inicio do nome da branch, ex feature/123, bate com qualquer um exceto /
+      - 'feature/*'
+      # bate com todos, inclusive /, ex feature/123/a
+      - 'feature/**'
+      # o ! ignora a feature, então essa não seria calculada
+      - '!feature/featc'
+    tags:
+    # temos tags e tags-ignore, funcionam como branches
+      - v1.*
+    paths:
+    # compila quando fizermos push com js, qualquer outra coisa não funciona
+      - '**.js'
+  # repository_dispatch:
   # schedule:
   #  - cron: "0/5 * * * *"
   #  - cron: "0/6 * * * *"
   # push:
-  pull_request:
-    types: [closed, assigned, opened, reopened]
+  # pull_request:
+  #  types: [closed, assigned, opened, reopened]
 
 jobs:
   run-github-actions:
     runs-on: ubuntu-latest
     steps:
       - name: payloas
+        # este env veio do build pelo postman
         run: echo ${{ github.event.client_payload.env }}
       - name: List Files
         run: |
